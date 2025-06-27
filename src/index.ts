@@ -1,5 +1,6 @@
 import { Hono } from 'hono'
 import { vectorize, vectorizeBatch, cosineSimilarity, getModelInfo } from './lib'
+import { tryCatch } from './helpers'
 
 const app = new Hono()
 
@@ -7,17 +8,14 @@ app.get('/', (c) => c.text('Vector Embeddings Generator API'))
 
 // Get model information
 app.get('/info', async (c) => {
-    try {
-        const info = getModelInfo()
-        return c.json(info)
-    } catch (error) {
-        return c.json({ error: 'Failed to get model info' }, 500)
-    }
+    const { data, error } = await tryCatch(() => c.json(getModelInfo()))
+    if (error) return c.json({ error: error.message }, 500)
+    return data
 })
 
 // Vectorize a single text
 app.post('/vectorize', async (c) => {
-    try {
+    const { data, error } = await tryCatch(async () => {
         const { text, options } = await c.req.json()
 
         if (!text || typeof text !== 'string') {
@@ -31,14 +29,14 @@ app.post('/vectorize', async (c) => {
             vector,
             dimensions: vector.length
         })
-    } catch (error) {
-        return c.json({ error: 'Failed to vectorize text' }, 500)
-    }
+    })
+    if (error) return c.json({ error: error.message }, 500)
+    return data
 })
 
 // Vectorize multiple texts in batch
 app.post('/vectorize-batch', async (c) => {
-    try {
+    const { data, error } = await tryCatch(async () => {
         const { texts, options } = await c.req.json()
 
         if (!Array.isArray(texts) || texts.some(t => typeof t !== 'string')) {
@@ -53,14 +51,14 @@ app.post('/vectorize-batch', async (c) => {
             count: vectors.length,
             dimensions: vectors[0]?.length || 0
         })
-    } catch (error) {
-        return c.json({ error: 'Failed to vectorize texts' }, 500)
-    }
+    })
+    if (error) return c.json({ error: 'Failed to vectorize texts' }, 500)
+    return data
 })
 
 // Calculate similarity between two texts
 app.post('/similarity', async (c) => {
-    try {
+    const { data, error } = await tryCatch(async () => {
         const { textA, textB, options } = await c.req.json()
 
         if (!textA || !textB || typeof textA !== 'string' || typeof textB !== 'string') {
@@ -78,9 +76,9 @@ app.post('/similarity', async (c) => {
                 similarity > 0.6 ? 'Similar' :
                     similarity > 0.4 ? 'Somewhat similar' : 'Not similar'
         })
-    } catch (error) {
-        return c.json({ error: 'Failed to calculate similarity' }, 500)
-    }
+    })
+    if (error) return c.json({ error: 'Failed to calculate similarity' }, 500)
+    return data
 })
 
 export default app
