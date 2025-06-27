@@ -72,13 +72,18 @@ app.post('/similarity', async (c) => {
             textA,
             textB,
             similarity,
-            interpretation: similarity > 0.8 ? 'Very similar' :
-                similarity > 0.6 ? 'Similar' :
-                    similarity > 0.4 ? 'Somewhat similar' : 'Not similar'
+            interpretation: getSimilarity(similarity)
         })
     })
     if (error) return c.json({ error: 'Failed to calculate similarity' }, 500)
     return data
 })
+
+function getSimilarity(similarity: number) {
+    if (similarity > .8) return 'Very similar'
+    if (similarity > .6) return 'Similar'
+    if (similarity > .4) return 'Somewhat similar'
+    return 'Not similar'
+}
 
 export default app
