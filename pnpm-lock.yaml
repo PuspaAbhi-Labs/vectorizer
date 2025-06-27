@@ -1,0 +1,54 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      typescript:
+        specifier: ^5
+        version: 5.8.3
+    devDependencies:
+      '@types/bun':
+        specifier: latest
+        version: 1.2.17
+
+packages:
+
+  '@types/bun@1.2.17':
+    resolution: {integrity: sha512-l/BYs/JYt+cXA/0+wUhulYJB6a6p//GTPiJ7nV+QHa8iiId4HZmnu/3J/SowP5g0rTiERY2kfGKXEK5Ehltx4Q==}
+
+  '@types/node@24.0.4':
+    resolution: {integrity: sha512-ulyqAkrhnuNq9pB76DRBTkcS6YsmDALy6Ua63V8OhrOBgbcYt6IOdzpw5P1+dyRIyMerzLkeYWBeOXPpA9GMAA==}
+
+  bun-types@1.2.17:
+    resolution: {integrity: sha512-ElC7ItwT3SCQwYZDYoAH+q6KT4Fxjl8DtZ6qDulUFBmXA8YB4xo+l54J9ZJN+k2pphfn9vk7kfubeSd5QfTVJQ==}
+
+  typescript@5.8.3:
+    resolution: {integrity: sha512-p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
+  undici-types@7.8.0:
+    resolution: {integrity: sha512-9UJ2xGDvQ43tYyVMpuHlsgApydB8ZKfVYTsLDhXkFL/6gfkp+U8xTGdh8pMJv1SpZna0zxG1DwsKZsreLbXBxw==}
+
+snapshots:
+
+  '@types/bun@1.2.17':
+    dependencies:
+      bun-types: 1.2.17
+
+  '@types/node@24.0.4':
+    dependencies:
+      undici-types: 7.8.0
+
+  bun-types@1.2.17:
+    dependencies:
+      '@types/node': 24.0.4
+
+  typescript@5.8.3: {}
+
+  undici-types@7.8.0: {}
